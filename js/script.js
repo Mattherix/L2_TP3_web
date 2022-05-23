@@ -12,11 +12,14 @@ function ajouter(){
     const dateTd = document.createElement('td')
     const categorieTd = document.createElement('td')
     const addAtTd = document.createElement('td')
+    const lengthTd = document.createElement('td')
 
     taskTd.textContent = document.newTaskF.tache.value
     dateTd.textContent = document.newTaskF.date.value
     categorieTd.textContent = document.newTaskF.categorie.value
     addAtTd.textContent = debut_fin_tache()
+    lengthTd.className = 'duree';
+    lengthTd.textContent = '0';
     
     //const selectEntree = document.getElementById("entreeId");
     //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
@@ -26,6 +29,7 @@ function ajouter(){
     console.log(dateTd.textContent)
     console.log(categorieTd.textContent)
     console.log(addAtTd.textContent)
+    console.log(lengthTd.textContent)
 
     if (!document.newTaskF.tache.checkValidity() ||
           !document.newTaskF.date.checkValidity() ||
@@ -35,7 +39,7 @@ function ajouter(){
         }
     
     //const table = document.querySelector('table')
-    newItem.append(taskTd, dateTd, categorieTd, addAtTd)
+    newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd)
 
      /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
     const table = document.querySelector('.datatable tbody')
@@ -64,3 +68,16 @@ function debut_fin_tache() {
 
   return year + '-' + month + '-' + day + ' à ' + hour + ':' + minute + ':' + second;
 }
+
+function incrementerDuree() {
+  let durees = document.getElementsByClassName("duree")
+  if (durees.length != 0) {
+    Array.prototype.forEach.call(durees, function(dureeElement) {
+      let valeur = parseInt(dureeElement.textContent)
+      dureeElement.textContent = valeur + 1
+    });
+  }
+}
+
+// Background jobs
+setInterval(incrementerDuree, 1000);
