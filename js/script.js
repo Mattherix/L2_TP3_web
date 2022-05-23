@@ -58,7 +58,7 @@ function ajouter(){
     table.appendChild(newItem)
 
     if (taskTd.textContent == "BOT_RUN") {
-      robot_interpreter()
+      activate_bot()
     }
 }
 

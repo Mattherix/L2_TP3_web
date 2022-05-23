@@ -28,12 +28,8 @@ function move_bot_bottom() {
   bender.style.top = (parseInt(bender.style.top) + 100) + 'px';
 }
 
-function sleep(sleepDuration) {
-    var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration){ /* Do nothing */ }
-}
 
-function robot_interpreter() {
+function activate_bot() {
   console.log("INTERPRETER")
   let table = document.querySelector('.datatable tbody')
   let cells = [...table.getElementsByTagName('tr')]
