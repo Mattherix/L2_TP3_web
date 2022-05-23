@@ -57,6 +57,9 @@ function ajouter(){
     /*  Ex2)3)vi) */
     table.appendChild(newItem)
 
+    if (taskTd.textContent == "BOT_RUN") {
+      robot_interpreter()
+    }
 }
 
  //supprimer toutes les lignes du tableau
