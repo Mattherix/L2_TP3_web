@@ -11,9 +11,12 @@ function ajouter(){
     const taskTd = document.createElement('td')
     const dateTd = document.createElement('td')
     const categorieTd = document.createElement('td')
+    const addAtTd = document.createElement('td')
+
     taskTd.textContent = document.newTaskF.tache.value
     dateTd.textContent = document.newTaskF.date.value
     categorieTd.textContent = document.newTaskF.categorie.value
+    addAtTd.textContent = debut_fin_tache()
     
     //const selectEntree = document.getElementById("entreeId");
     //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
@@ -22,16 +25,17 @@ function ajouter(){
     console.log(taskTd.textContent)
     console.log(dateTd.textContent)
     console.log(categorieTd.textContent)
+    console.log(addAtTd.textContent)
 
     if (!document.newTaskF.tache.checkValidity() ||
           !document.newTaskF.date.checkValidity() ||
           !document.newTaskF.categorie.checkValidity()
          ) {
-               return
+          return
         }
     
     //const table = document.querySelector('table')
-    newItem.append(taskTd, dateTd, categorieTd)
+    newItem.append(taskTd, dateTd, categorieTd, addAtTd)
 
      /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
     const table = document.querySelector('.datatable tbody')
@@ -47,4 +51,16 @@ function supprimer() {
           tbody.removeChild(tbody.firstChild)
         }
     
+}
+
+function debut_fin_tache() {
+  let d = new Date();
+  let day = d.getDate();
+  let month = d.getMonth();
+  let year = d.getFullYear();
+  let hour = d.getHours();
+  let minute = d.getMinutes();
+  let second = d.getSeconds();
+
+  return year + '-' + month + '-' + day + ' à ' + hour + ':' + minute + ':' + second;
 }
