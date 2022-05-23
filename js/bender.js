@@ -30,7 +30,7 @@ function move_bot_bottom() {
 
 
 function activate_bot() {
-  console.log("INTERPRETER")
+  alert("BOT GO! ")
   let table = document.querySelector('.datatable tbody')
   let cells = [...table.getElementsByTagName('tr')]
   const tasks_name = cells.map(row => row.cells[0]);
@@ -39,6 +39,7 @@ function activate_bot() {
     for (let index = 0; index < tasks_name.length; index++) {
       const cell = tasks_name[index];
       setTimeout(() => {
+        console.log(cell.textContent)
         switch (cell.textContent) {
           case "BOT_CREATE":
             create_robot();
