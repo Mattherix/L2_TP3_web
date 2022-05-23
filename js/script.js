@@ -71,7 +71,7 @@ function supprimer() {
 function debut_fin_tache() {
   let d = new Date();
   let day = d.getDate();
-  let month = d.getMonth();
+  let month = d.getMonth() + 1;
   let year = d.getFullYear();
   let hour = d.getHours();
   let minute = d.getMinutes();
