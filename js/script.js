@@ -92,13 +92,27 @@ function incrementerDuree() {
     });
   }
 }
+class Tache {
+  constructor(nom, date, categorie) {
+    this.nom = nom;
+    this.date = date;
+    this.categorie = categorie;
+  }
+}
 
+/*
 function tacheSaisie() {
   return {
     nom: document.forms.newTaskF.tache.value,
     date: document.forms.newTaskF.date.value,
     categorie: document.forms.newTaskF.categorie.value
   }
+}
+*/
+
+function tacheSaisie() {
+  var newCommandForm = document.forms.newTaskF; 
+  return new Tache(newCommandForm.tache.value, newCommandForm.date.value, newCommandForm.categorie.value);
 }
 
 // Background jobs
