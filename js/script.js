@@ -93,5 +93,9 @@ function incrementerDuree() {
   }
 }
 
+function tacheSaisie() {
+  return document.forms.newTaskF.tache.value;
+}
+
 // Background jobs
 setInterval(incrementerDuree, 1000);
