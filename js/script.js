@@ -2,57 +2,65 @@ var newCommandForm = document.forms.newTaskF;
 
 
 function ajouter(){
-    //Vérifier que la récupération se fait bien !)
+    // Vérifier que la récupération se fait bien !)
     console.log(document.forms.newTaskF.tache.value);
     console.log(document.forms.newTaskF.date.value);
 
-    //création des variable pour la création d'une nouvelle ligne dans le tableau
-    const newItem = document.createElement('tr')
-    const taskTd = document.createElement('td')
-    const dateTd = document.createElement('td')
-    const categorieTd = document.createElement('td')
-    const addAtTd = document.createElement('td')
-    const lengthTd = document.createElement('td')
-    const buttonTd = document.createElement('td')
-    const finishAtTd = document.createElement('td')
+    let tache = tacheSaisie();
+    pushTache(tache);
+    mesTaches.forEach(function addToTable(tache) {
+      if (tache.addToTable) {
+        return;
+      }
 
-    taskTd.textContent = document.newTaskF.tache.value
-    dateTd.textContent = document.newTaskF.date.value
-    categorieTd.textContent = document.newTaskF.categorie.value
-    addAtTd.textContent = debut_fin_tache()
-    lengthTd.className = 'duree';
-    lengthTd.textContent = '0';
-    
-    const button = document.createElement('button')
-    button.textContent = "Terminer la tâche"
-    button.addEventListener("click", function f() {
-      button.textContent = "Terminé !"
-      finishAtTd.textContent = debut_fin_tache();
+      // Création des variable pour la création d'une nouvelle ligne dans le tableau
+      const newItem = document.createElement('tr')
+      const taskTd = document.createElement('td')
+      const dateTd = document.createElement('td')
+      const categorieTd = document.createElement('td')
+      const addAtTd = document.createElement('td')
+      const lengthTd = document.createElement('td')
+      const buttonTd = document.createElement('td')
+      const finishAtTd = document.createElement('td')
+
+      taskTd.textContent = tache.nom
+      dateTd.textContent = tache.date
+      categorieTd.textContent = tache.categorie
+      addAtTd.textContent = tache.addAt
+      lengthTd.className = 'duree'
+      lengthTd.textContent = tache.length
+      
+      const button = document.createElement('button')
+      button.textContent = "Terminer la tâche"
+      button.addEventListener("click", function f() {
+        button.textContent = "Terminé !"
+        finishAtTd.textContent = debut_fin_tache();
+      });
+      buttonTd.appendChild(button);
+
+      //const selectEntree = document.getElementById("entreeId");
+      //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
+      //const textselectionne = selectEntree.options[selectEntree.selectedIndex].text;
+      
+      //Vérification de la récupération
+      tache.log_tache()
+      
+      //const table = document.querySelector('table')
+      newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
+
+      /* On ajoute chaque élément dans mesTaches au tableau */
+
+      /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
+      const table = document.querySelector('.datatable tbody')
+      /*  Ex2)3)vi) */
+      table.appendChild(newItem)
+
+      tache.addToTable = true;
+
+      if (taskTd.textContent == "BOT_RUN") {
+        activate_bot()
+      }
     });
-    buttonTd.appendChild(button);
-
-    //const selectEntree = document.getElementById("entreeId");
-    //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
-    //const textselectionne = selectEntree.options[selectEntree.selectedIndex].text;
-    
-    //Vérification de la récupération
-    console.log(taskTd.textContent)
-    console.log(dateTd.textContent)
-    console.log(categorieTd.textContent)
-    console.log(addAtTd.textContent)
-    console.log(lengthTd.textContent)
-    
-    //const table = document.querySelector('table')
-    newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
-
-    /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
-    const table = document.querySelector('.datatable tbody')
-    /*  Ex2)3)vi) */
-    table.appendChild(newItem)
-
-    if (taskTd.textContent == "BOT_RUN") {
-      activate_bot()
-    }
 }
 
 //supprimer toutes les lignes du tableau
@@ -85,12 +93,13 @@ function incrementerDuree() {
   }
 }
 class Tache {
-  constructor(nom, date, categorie, addAt, length) {
+  constructor(nom, date, categorie) {
     this.nom = nom;
     this.date = date;
     this.categorie = categorie;
-    this.addAt = addAt;
-    this.length = length;
+    this.addAt = debut_fin_tache();
+    this.length = 0;
+    this.addToTable = false;
   }
 
   log_tache() {
@@ -126,7 +135,11 @@ function tacheSaisie() {
     ) {
     return
   }
-  return new Tache(newCommandForm.tache.value, newCommandForm.date.value, newCommandForm.categorie.value);
+  return new Tache(
+    newCommandForm.tache.value,
+    newCommandForm.date.value,
+    newCommandForm.categorie.value
+  );
 }
 
 // Background jobs
