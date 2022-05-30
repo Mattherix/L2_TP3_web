@@ -44,6 +44,7 @@ function addToTable(tache) {
     button.textContent = "Terminé !"
     finishAtTd.textContent = debut_fin_tache();
     lengthTd.className = 'stop'
+    newItem.style.backgroundColor = 'lightgreen'
   }
   button.addEventListener("click", finish);
   if (tache.completed) {
