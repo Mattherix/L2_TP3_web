@@ -41,13 +41,6 @@ function ajouter(){
     console.log(categorieTd.textContent)
     console.log(addAtTd.textContent)
     console.log(lengthTd.textContent)
-
-    if (!document.newTaskF.tache.checkValidity() ||
-          !document.newTaskF.date.checkValidity() ||
-          !document.newTaskF.categorie.checkValidity()
-         ) {
-          return
-        }
     
     //const table = document.querySelector('table')
     newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
@@ -116,7 +109,13 @@ function pushTache(unetache) {
 }
 
 function tacheSaisie() {
-  var newCommandForm = document.forms.newTaskF; 
+  var newCommandForm = document.forms.newTaskF;
+  if (!newCommandForm.tache.checkValidity() ||
+    !newCommandForm.date.checkValidity() ||
+    !newCommandForm.categorie.checkValidity()
+    ) {
+    return
+  }
   return new Tache(newCommandForm.tache.value, newCommandForm.date.value, newCommandForm.categorie.value);
 }
 
