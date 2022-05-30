@@ -40,6 +40,7 @@ function addAllTasksToTable(tasks) {
     button.addEventListener("click", function f() {
       button.textContent = "Terminé !"
       finishAtTd.textContent = debut_fin_tache();
+      lengthTd.className = 'stop'
     });
     buttonTd.appendChild(button);
 
