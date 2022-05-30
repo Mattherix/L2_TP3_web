@@ -110,6 +110,12 @@ function tacheSaisie() {
 }
 */
 
+var mesTaches = []
+
+function pushTache(unetache) {
+  mesTaches.push(unetache);
+}
+
 function tacheSaisie() {
   var newCommandForm = document.forms.newTaskF; 
   return new Tache(newCommandForm.tache.value, newCommandForm.date.value, newCommandForm.categorie.value);
