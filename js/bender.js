@@ -52,6 +52,10 @@ function get_bot_action(textContent) {
         bender.style.top = (parseInt(bender.style.top) + 100) + 'px';
       };
     
+    case "BOT_ALERT":
+      return function bot_alert() {
+        alert('BLIP BLOUP !');
+      };
     default:
       break;
   }
