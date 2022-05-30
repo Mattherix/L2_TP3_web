@@ -85,10 +85,20 @@ function incrementerDuree() {
   }
 }
 class Tache {
-  constructor(nom, date, categorie) {
+  constructor(nom, date, categorie, addAt, length) {
     this.nom = nom;
     this.date = date;
     this.categorie = categorie;
+    this.addAt = addAt;
+    this.length = length;
+  }
+
+  log_tache() {
+    console.log(this.nom)
+    console.log(this.date)
+    console.log(this.categorie)
+    console.log(this.addAt)
+    console.log(this.length)
   }
 }
 
