@@ -38,33 +38,34 @@ function activate_bot() {
   if (tasks_name != 0) {
     for (let index = 0; index < tasks_name.length; index++) {
       const cell = tasks_name[index];
-      setTimeout(() => {
-        console.log(cell.textContent)
-        switch (cell.textContent) {
-          case "BOT_CREATE":
-            create_robot();
-            break;
-          
-          case "BOT_RIGHT":
-            move_bot_right();
-            break;
-          
-          case "BOT_LEFT":
-            move_bot_left();
-            break;
-          
-          case "BOT_UP":
-            move_bot_top();
-            break;
-          
-          case "BOT_DOWN":
-            move_bot_bottom();
-            break;
-          
-          default:
-            break;
-        }
-      }, index*1000)
+      setTimeout(() => {get_bot_action(cell.textContent)}, index*1000)
     }
+  }
+}
+function get_bot_action(textContent) {
+  console.log(textContent)
+  switch (textContent) {
+    case "BOT_CREATE":
+      create_robot();
+      break;
+    
+    case "BOT_RIGHT":
+      move_bot_right();
+      break;
+    
+    case "BOT_LEFT":
+      move_bot_left();
+      break;
+    
+    case "BOT_UP":
+      move_bot_top();
+      break;
+    
+    case "BOT_DOWN":
+      move_bot_bottom();
+      break;
+    
+    default:
+      break;
   }
 }
