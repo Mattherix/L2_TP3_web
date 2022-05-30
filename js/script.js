@@ -156,6 +156,15 @@ function reformatDate(date_str) {
   return year + '-' + day + '-' + month;
 }
 
+function reformatBackDate(date_str) {
+  d = new Date(date_str)
+  let day = String(d.getDate()).padStart(2, '0');
+  let month = String(d.getMonth() + 1).padStart(2, '0');
+  let year = d.getFullYear() % 100;
+
+  return day + '/' + month + '/' + year;
+}
+
 function loadTasks(url) {
   fetch(url).then(response => {
     if (!response.ok) {
@@ -169,6 +178,25 @@ function loadTasks(url) {
   }).catch(err => {
     console.error(err)
   });
+}
+
+function getTasksFromTableToJSON() {
+  tasks = []
+  let table = document.querySelector('.datatable tbody')
+  let rows = table.getElementsByTagName('tr')
+
+  for (let index = 0; index < rows.length; index++) {
+    cells = [...rows[index].getElementsByTagName('td')]
+    tasks.push({
+      "task": cells[0].outerText,
+      "date": reformatBackDate(cells[1].outerText),
+      "category": cells[2].outerText,
+    })
+  }
+
+  json = JSON.stringify(tasks);
+  console.log(json)
+  return json
 }
 
 // Background jobs and at run script
