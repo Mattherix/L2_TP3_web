@@ -1,6 +1,5 @@
 var newCommandForm = document.forms.newTaskF; 
 
-
 function ajouter(){
     // Vérifier que la récupération se fait bien !)
     console.log(document.forms.newTaskF.tache.value);
@@ -44,6 +43,7 @@ function addToTable(tache) {
     button.textContent = "Terminé !"
     finishAtTd.textContent = debut_fin_tache();
     lengthTd.className = 'stop'
+    newItem.style.backgroundColor = 'lightgreen'
   }
   button.addEventListener("click", finish);
   if (tache.completed) {
