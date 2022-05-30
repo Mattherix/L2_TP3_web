@@ -28,14 +28,14 @@ function ajouter(){
     button.addEventListener("click", function f() {
       button.textContent = "Terminé !"
       finishAtTd.textContent = debut_fin_tache();
-
     });
     buttonTd.appendChild(button);
 
     //const selectEntree = document.getElementById("entreeId");
     //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
     //const textselectionne = selectEntree.options[selectEntree.selectedIndex].text;
-   //Vérification de la récupération
+    
+    //Vérification de la récupération
     console.log(taskTd.textContent)
     console.log(dateTd.textContent)
     console.log(categorieTd.textContent)
@@ -52,7 +52,7 @@ function ajouter(){
     //const table = document.querySelector('table')
     newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
 
-     /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
+    /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
     const table = document.querySelector('.datatable tbody')
     /*  Ex2)3)vi) */
     table.appendChild(newItem)
@@ -62,13 +62,12 @@ function ajouter(){
     }
 }
 
- //supprimer toutes les lignes du tableau
+//supprimer toutes les lignes du tableau
 function supprimer() {
-        const tbody = document.querySelector('.datatable tbody' )
-        while (tbody.firstChild) {
-          tbody.removeChild(tbody.firstChild)
-        }
-    
+  const tbody = document.querySelector('.datatable tbody' )
+  while (tbody.firstChild) {
+    tbody.removeChild(tbody.firstChild)
+  } 
 }
 
 function debut_fin_tache() {
