@@ -13,60 +13,66 @@ function ajouter(){
 }
 
 function addAllTasksToTable(tasks) {
-  tasks.forEach(function addToTable(tache) {
-    if (tache.addToTable) {
-      return;
-    }
+  tasks.forEach((tache) => {addToTable(tache)});
+}
 
-    // Création des variable pour la création d'une nouvelle ligne dans le tableau
-    const newItem = document.createElement('tr')
-    const taskTd = document.createElement('td')
-    const dateTd = document.createElement('td')
-    const categorieTd = document.createElement('td')
-    const addAtTd = document.createElement('td')
-    const lengthTd = document.createElement('td')
-    const buttonTd = document.createElement('td')
-    const finishAtTd = document.createElement('td')
+function addToTable(tache) {
+  if (tache.addToTable) {
+    return;
+  }
 
-    taskTd.textContent = tache.nom
-    dateTd.textContent = tache.date
-    categorieTd.textContent = tache.categorie
-    addAtTd.textContent = tache.addAt
-    lengthTd.className = 'duree'
-    lengthTd.textContent = tache.length
-    
-    const button = document.createElement('button')
-    button.textContent = "Terminer la tâche"
-    button.addEventListener("click", function f() {
-      button.textContent = "Terminé !"
-      finishAtTd.textContent = debut_fin_tache();
-      lengthTd.className = 'stop'
-    });
-    buttonTd.appendChild(button);
+  // Création des variable pour la création d'une nouvelle ligne dans le tableau
+  const newItem = document.createElement('tr')
+  const taskTd = document.createElement('td')
+  const dateTd = document.createElement('td')
+  const categorieTd = document.createElement('td')
+  const addAtTd = document.createElement('td')
+  const lengthTd = document.createElement('td')
+  const buttonTd = document.createElement('td')
+  const finishAtTd = document.createElement('td')
 
-    //const selectEntree = document.getElementById("entreeId");
-    //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
-    //const textselectionne = selectEntree.options[selectEntree.selectedIndex].text;
-    
-    //Vérification de la récupération
-    tache.log_tache()
-    
-    //const table = document.querySelector('table')
-    newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
+  taskTd.textContent = tache.nom
+  dateTd.textContent = tache.date
+  categorieTd.textContent = tache.categorie
+  addAtTd.textContent = tache.addAt
+  lengthTd.className = 'duree'
+  lengthTd.textContent = tache.length
+  
+  const button = document.createElement('button')
+  button.textContent = "Terminer la tâche"
+  function finish() {
+    button.textContent = "Terminé !"
+    finishAtTd.textContent = debut_fin_tache();
+    lengthTd.className = 'stop'
+  }
+  button.addEventListener("click", finish);
+  if (tache.completed) {
+    finish()
+  }
+  buttonTd.appendChild(button);
 
-    /* On ajoute chaque élément dans mesTaches au tableau */
+  //const selectEntree = document.getElementById("entreeId");
+  //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
+  //const textselectionne = selectEntree.options[selectEntree.selectedIndex].text;
+  
+  //Vérification de la récupération
+  tache.log_tache()
+  
+  //const table = document.querySelector('table')
+  newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
 
-    /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
-    const table = document.querySelector('.datatable tbody')
-    /*  Ex2)3)vi) */
-    table.appendChild(newItem)
+  /* On ajoute chaque élément dans mesTaches au tableau */
 
-    tache.addToTable = true;
+  /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
+  const table = document.querySelector('.datatable tbody')
+  /*  Ex2)3)vi) */
+  table.appendChild(newItem)
 
-    if (taskTd.textContent == "BOT_RUN") {
-      activate_bot()
-    }
-  });
+  tache.addToTable = true;
+
+  if (taskTd.textContent == "BOT_RUN") {
+    activate_bot()
+  }
 }
 
 //supprimer toutes les lignes du tableau
@@ -106,6 +112,7 @@ class Tache {
     this.addAt = debut_fin_tache();
     this.length = 0;
     this.addToTable = false;
+    this.completed = false
   }
 
   log_tache() {
@@ -199,6 +206,57 @@ function getTasksFromTableToJSON() {
   console.log(json)
   return json
 }
+
+// Indice de la page courante, on commence la pagination à l'indice 0
+let page = 0;
+
+const tasksCount = 200; // Nombre total de tâches
+const itemsPerPage = 10; // Nombre de lignes par page
+
+// Fonction de récupération des tâches
+function getTasks(page) {
+  // On récupère les données depuis le serveur externe
+  // Premier élément de la page courante
+  const start = page * itemsPerPage;
+
+  // Nombre d'éléments par page
+  const limit = itemsPerPage;
+
+  /*
+  On se sert des paramètres (Query parameters) _start et _limit pour obtenir
+  un résultat paginé
+  _start : définit l'indice du premier élément à récupérer dans le tableau
+  de résultat
+  _limit : définit le nombre d'éléments à récupérer
+  */
+
+  fetch("http://jsonplaceholder.typicode.com/todos?_start=" + start +
+  "&_limit=" + limit)
+  .then((response) => response.json())
+  .then(function (data) {
+    // Un tableau (Array) de 200 objets javascript représentant des tâches s'affiche dans la console du navigateur
+    console.log(data);
+    // On stocke le nombre total de tâches récupérées pour la pagination
+    //tasksCount = data.length;
+    // On parcourt le tableau de tâches récupéré et on ajoute une ligne au tableau de tâche pour chaque élément du tableau
+      for (let i = 0; i < data.length; i++) {
+        createTask(data[i]);
+      }
+  });
+}
+
+function createTask(data) {
+  console.log(data)
+  task = new Tache(
+    data.title,
+    debut_fin_tache(),
+    'CreatedTask'
+  )
+  task.completed = data.completed
+  addToTable(task);
+}
+// Appel de getTasks au chargement de la page (On récupère la première page de résultat (indice 0))
+getTasks(0);
 
 // Background jobs and at run script
 setInterval(incrementerDuree, 1000);
