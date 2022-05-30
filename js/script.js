@@ -8,59 +8,64 @@ function ajouter(){
 
     let tache = tacheSaisie();
     pushTache(tache);
-    mesTaches.forEach(function addToTable(tache) {
-      if (tache.addToTable) {
-        return;
-      }
+    
+    addAllTasksToTable(mesTaches)    
+}
 
-      // Création des variable pour la création d'une nouvelle ligne dans le tableau
-      const newItem = document.createElement('tr')
-      const taskTd = document.createElement('td')
-      const dateTd = document.createElement('td')
-      const categorieTd = document.createElement('td')
-      const addAtTd = document.createElement('td')
-      const lengthTd = document.createElement('td')
-      const buttonTd = document.createElement('td')
-      const finishAtTd = document.createElement('td')
+function addAllTasksToTable(tasks) {
+  tasks.forEach(function addToTable(tache) {
+    if (tache.addToTable) {
+      return;
+    }
 
-      taskTd.textContent = tache.nom
-      dateTd.textContent = tache.date
-      categorieTd.textContent = tache.categorie
-      addAtTd.textContent = tache.addAt
-      lengthTd.className = 'duree'
-      lengthTd.textContent = tache.length
-      
-      const button = document.createElement('button')
-      button.textContent = "Terminer la tâche"
-      button.addEventListener("click", function f() {
-        button.textContent = "Terminé !"
-        finishAtTd.textContent = debut_fin_tache();
-      });
-      buttonTd.appendChild(button);
+    // Création des variable pour la création d'une nouvelle ligne dans le tableau
+    const newItem = document.createElement('tr')
+    const taskTd = document.createElement('td')
+    const dateTd = document.createElement('td')
+    const categorieTd = document.createElement('td')
+    const addAtTd = document.createElement('td')
+    const lengthTd = document.createElement('td')
+    const buttonTd = document.createElement('td')
+    const finishAtTd = document.createElement('td')
 
-      //const selectEntree = document.getElementById("entreeId");
-      //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
-      //const textselectionne = selectEntree.options[selectEntree.selectedIndex].text;
-      
-      //Vérification de la récupération
-      tache.log_tache()
-      
-      //const table = document.querySelector('table')
-      newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
-
-      /* On ajoute chaque élément dans mesTaches au tableau */
-
-      /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
-      const table = document.querySelector('.datatable tbody')
-      /*  Ex2)3)vi) */
-      table.appendChild(newItem)
-
-      tache.addToTable = true;
-
-      if (taskTd.textContent == "BOT_RUN") {
-        activate_bot()
-      }
+    taskTd.textContent = tache.nom
+    dateTd.textContent = tache.date
+    categorieTd.textContent = tache.categorie
+    addAtTd.textContent = tache.addAt
+    lengthTd.className = 'duree'
+    lengthTd.textContent = tache.length
+    
+    const button = document.createElement('button')
+    button.textContent = "Terminer la tâche"
+    button.addEventListener("click", function f() {
+      button.textContent = "Terminé !"
+      finishAtTd.textContent = debut_fin_tache();
     });
+    buttonTd.appendChild(button);
+
+    //const selectEntree = document.getElementById("entreeId");
+    //const valeurselectionnee = selectEntree.options[selectEntree.selectedIndex].value;
+    //const textselectionne = selectEntree.options[selectEntree.selectedIndex].text;
+    
+    //Vérification de la récupération
+    tache.log_tache()
+    
+    //const table = document.querySelector('table')
+    newItem.append(taskTd, dateTd, categorieTd, addAtTd, lengthTd, finishAtTd, buttonTd)
+
+    /* On ajoute chaque élément dans mesTaches au tableau */
+
+    /* le premier élément dans le document qui contient la classe "datatable" est retourné*/
+    const table = document.querySelector('.datatable tbody')
+    /*  Ex2)3)vi) */
+    table.appendChild(newItem)
+
+    tache.addToTable = true;
+
+    if (taskTd.textContent == "BOT_RUN") {
+      activate_bot()
+    }
+  });
 }
 
 //supprimer toutes les lignes du tableau
@@ -142,5 +147,30 @@ function tacheSaisie() {
   );
 }
 
-// Background jobs
+function reformatDate(date_str) {
+  d = new Date(date_str)
+  let day = String(d.getDate()).padStart(2, '0');
+  let month = String(d.getMonth() + 1).padStart(2, '0');
+  let year = d.getFullYear();
+
+  return year + '-' + day + '-' + month;
+}
+
+function loadTasks(url) {
+  fetch(url).then(response => {
+    if (!response.ok) {
+      throw new Error("HTTP error " + response.status);
+    }
+    return response.json();
+  }).then(tasks => {
+    console.log(tasks)
+    tasks.forEach((tache) => {pushTache(new Tache(tache['task'], reformatDate(tache['date']), tache['category']))})
+    addAllTasksToTable(mesTaches)
+  }).catch(err => {
+    console.error(err)
+  });
+}
+
+// Background jobs and at run script
 setInterval(incrementerDuree, 1000);
+loadTasks('/tasks.json');
