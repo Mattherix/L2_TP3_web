@@ -94,7 +94,11 @@ function incrementerDuree() {
 }
 
 function tacheSaisie() {
-  return document.forms.newTaskF.tache.value;
+  return {
+    nom: document.forms.newTaskF.tache.value,
+    date: document.forms.newTaskF.date.value,
+    categorie: document.forms.newTaskF.categorie.value
+  }
 }
 
 // Background jobs
